@@ -1,7 +1,7 @@
 # IOT SERVER
 
 
-### Prerequirement
+### Prerequisite
 
 * Have docker installed on your computer
 * Running dynamodb-local for devlopment environment

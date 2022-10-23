@@ -3,7 +3,7 @@ import Joi from "joi";
 import config, { errors } from "./configs";
 import { HttpException } from "./exceptions";
 import jwt from "jsonwebtoken";
-import { AuthRequest, AuthToken } from "./token";
+import { AuthToken } from "./token";
 import UserService from "../modules/user/userService";
 
 
@@ -31,7 +31,7 @@ export const exceptionHandler = (error: HttpException, req: Request, res: Respon
 }
 
 
-export const authHandler = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authHandler = async (req: Request, res: Response, next: NextFunction) => {
     const userService = new UserService();
     const headers = req.headers;
     if (!headers || !headers.authorization) {
@@ -42,10 +42,11 @@ export const authHandler = async (req: AuthRequest, res: Response, next: NextFun
         const id = verifyToken._id;
         const user = await userService.getUserById(id);
         if (!user) throw new HttpException(401, errors.UNAUTHORIZED);
-        req.user = user;
+        res.locals.user = user;
         return next();
 
     } catch (error) {
+        console.log(error);
         return next(new HttpException(401, errors.UNAUTHORIZED));
     }
 }

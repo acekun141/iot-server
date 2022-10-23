@@ -1,12 +1,12 @@
-import { Response, NextFunction } from "express";
-import { AuthRequest } from "../../utils/token";
+import { Response, NextFunction, Request } from "express";
+import { AuthResponse } from "../../utils/interfaces";
 
 
 class UserController {
-    public getDetail(req: AuthRequest, res: Response, next: NextFunction) {
+    public getDetail(req: Request, res: AuthResponse, next: NextFunction) {
         try {
-            const { username, role, permission, _id: id } = req.user;
-            return { username, role, permission, id };
+            const { username, role, permission, _id: id } = res.locals.user;
+            res.json({ username, role, permission, id });
         } catch (error) {
             next(error);
         }

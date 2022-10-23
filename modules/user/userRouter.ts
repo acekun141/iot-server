@@ -13,7 +13,7 @@ class UserRouter {
     }
 
     private initializeRoute() {
-        // this.router.get(`${this.path}`, authHandler, this.controller.getDetail)
+        this.router.get(`${this.path}`, authHandler, this.controller.getDetail)
     }
 }
 

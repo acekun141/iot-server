@@ -7,6 +7,7 @@ import AuthRouter from "./modules/auth/authRouter";
 import config from "./utils/configs";
 import { exceptionHandler } from "./utils/middlewares";
 import Database from "./modules/dynamodb/dynamodbClient";
+import UserRouter from "./modules/user/userRouter";
 
 
 class App {
@@ -29,7 +30,7 @@ class App {
 
 
     private initRouter() {
-        const routers = [new AuthRouter()]
+        const routers = [new AuthRouter(), new UserRouter()]
         routers.map(({ router }) => this.app.use(router));
         this.app.use(exceptionHandler)
     }

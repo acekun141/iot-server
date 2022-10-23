@@ -27,7 +27,7 @@ class UserService {
 
 
     public async getUserById(id: string) {
-        const user: any = await this.dbClient.getItem({
+        const { Item: user }: any = await this.dbClient.getItem({
             TableName: "users",
             Key: {"id": {S: id}}
         }).promise()

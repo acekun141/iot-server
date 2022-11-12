@@ -36,7 +36,6 @@ class AuthService {
         if (!user) {
             throw new HttpException(400, errors.IVALID_IDENTIFY);
         }
-        console.log('user', user);
         const isValid = await this.comparePassword(user.hashPassword, payload.password);
         if (!isValid) {
             throw new HttpException(400, errors.IVALID_IDENTIFY)

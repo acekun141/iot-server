@@ -6,6 +6,6 @@ export const LoginDTO = Joi.object({
 });
 
 export const RegisterDTO = Joi.object({
-    username: Joi.string().required(),
+    username: Joi.string().email().required(),
     password: Joi.string().required(),
 });

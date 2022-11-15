@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validation } from "../../utils/middlewares";
 import DeviceController from "./deviceController";
-import { UpdateColorDTO } from "./deviceDTO";
+import { UpdateDesiredDTO } from "./deviceDTO";
 
 
 class DeviceRouter {
@@ -14,7 +14,7 @@ class DeviceRouter {
     }
 
     private initializeRoute() {
-        this.router.put(`${this.path}/color`, validation(UpdateColorDTO), this.controller.changeColor) // TODOS: must have auth
+        this.router.put(`${this.path}`, validation(UpdateDesiredDTO), this.controller.updateState) // TODOS: must have auth
     }
 }
 

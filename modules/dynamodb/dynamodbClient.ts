@@ -1,4 +1,3 @@
-import _ from "lodash";
 import AWS from "aws-sdk";
 import config from "../../utils/configs";
 import { createTableConfig, updateTableConfig } from "./dynamodbUtils";
@@ -13,10 +12,11 @@ class Database {
 
     public static async initDatabase() {
         // const tables = await Database.client.listTables().promise();
-        // const tableNames = _.get(tables, 'TableNames', [])
-        // if (_.includes(tableNames, "users")) return;
+        // if (tables.TableNames && tables.TableNames.length > 0) return;
+        // console.log('[CREATE USER TABLE]')
         // await Database.client.createTable(createTableConfig).promise();
         // await Database.client.updateTable(updateTableConfig).promise();
+        // console.log('[CREATE USER TABLE SUCCESS]')
     }
 }
 

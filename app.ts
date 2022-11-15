@@ -9,6 +9,7 @@ import { exceptionHandler } from "./utils/middlewares";
 import Database from "./modules/dynamodb/dynamodbClient";
 import UserRouter from "./modules/user/userRouter";
 import DeviceRouter from "./modules/device/deviceRoute";
+import IoT from "./modules/iot/iotClient";
 
 
 class App {
@@ -38,6 +39,7 @@ class App {
 
 
     public listen() {
+        IoT.initSocketConnection()
         Database.initDatabase()
         this.app.listen({ port: config.PORT }, () => {
             console.log(`[SERVER] server running at port ${config.PORT}`)

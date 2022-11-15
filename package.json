@@ -19,7 +19,7 @@
     "morgan": "^1.10.0"
   },
   "scripts": {
-    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' index.ts"
+    "dev": "nodemon --watch './**/*.ts' --exec ts-node index.ts"
   },
   "devDependencies": {
     "@types/aws-iot-device-sdk": "^2.2.4",

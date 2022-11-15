@@ -5,11 +5,11 @@ import DeviceService from "./deviceService";
 
 class DeviceController {
     private service = new DeviceService();
-    public changeColor = async (req: Request, res: Response, next: NextFunction) => {
+    public updateState = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const deviceName = req.body.name;
-            const color = req.body.color;
-            this.service.updateDeviceProperty(deviceName, "color", color);
+            const desired = req.body.desired;
+            this.service.updateDeviceProperty(deviceName, "desired", desired);
             return res.json({ "status": "published" })
         } catch (error) {
             next(error)

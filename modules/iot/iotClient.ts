@@ -1,5 +1,7 @@
 import AWSIoT from "aws-iot-device-sdk";
 import config from "../../utils/configs";
+import DeviceService from "../device/deviceService";
+import Database from "../dynamodb/dynamodbClient";
 
 class IoT {
     private static Client: AWSIoT.thingShadow = new AWSIoT.thingShadow({
@@ -10,7 +12,7 @@ class IoT {
         host: config.IOT_HOST,
     });
 
-    private static topicForSubscribe = "$aws/things/ESP32/shadow/update";
+    private static topicForSubscribe = "$aws/things/+/shadow/update";
 
     static publishTopic = async (topicName: string, content: any) => {
         IoT.Client.publish(topicName, content);
@@ -21,11 +23,16 @@ class IoT {
     }
 
     static initSocketConnection = () => {
-        IoT.subscribeTopic(IoT.topicForSubscribe);
-        IoT.Client.on("message", (topic, payload) => {
-            console.log(topic, payload.toString())
-            console.log(JSON.parse(payload.toString()))
-        })
+        try {
+            const deviceService = new DeviceService();
+            IoT.subscribeTopic(IoT.topicForSubscribe);
+            IoT.Client.on("message", (topic, payload) => {
+                const device = topic.split("$aws/things/")[1].split("/shadow/update")[0];
+                deviceService.updateDeviceState(device, JSON.parse(payload.toString()).state)
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

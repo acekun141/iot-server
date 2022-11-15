@@ -6,7 +6,7 @@ class Database {
     static client: AWS.DynamoDB = new AWS.DynamoDB({
         region: config.AWS_REGION,
         accessKeyId: config.AWS_SECRET_ID,
-        secretAccessKey: config.AWS_SECRET_KEY
+        secretAccessKey: config.AWS_SECRET_KEY,
     });
 
 

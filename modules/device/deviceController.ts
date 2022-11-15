@@ -7,10 +7,29 @@ class DeviceController {
     private service = new DeviceService();
     public updateState = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const deviceName = req.body.name;
+            const deviceCode = req.body.deviceCode;
             const desired = req.body.desired;
-            this.service.updateDeviceProperty(deviceName, "desired", desired);
+            this.service.updateDeviceProperty(deviceCode, "desired", desired);
             return res.json({ "status": "published" })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public addDevice = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { name, code } = req.body;
+            const device_code = await this.service.addDevice({ name, code });
+            return res.json({ "code": device_code })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public getDevices = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const devices = await this.service.getAllDevices();
+            return res.json({ devices })
         } catch (error) {
             next(error)
         }

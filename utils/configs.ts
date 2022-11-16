@@ -4,6 +4,7 @@ dotenv.config();
 
 const config = {
     PORT: process.env.PORT || "5002",
+    HOST: process.env.HOST || "0.0.0.0",
     SECRET: process.env.SECRET || "dev",
     JWTLIFE: Number.parseInt(process.env.JWTLIFE || "14400"), // 1 days
 
@@ -16,6 +17,7 @@ const config = {
     IOT_CAPATH: path.resolve(__dirname, "../CAkeys", process.env.IOT_CAPATH || ""),
     IOT_CLIENTID: process.env.IOT_CLIENTID,
     IOT_HOST: process.env.IOT_HOST,
+    SOCKET_DEVICE_CHANGE_EVENT: "device-change",
 }
 
 export const errors = {

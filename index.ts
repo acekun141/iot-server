@@ -3,5 +3,5 @@ import App from "./app";
 
 dotenv.config();
 
-const app = new App();
+export const app = new App();
 app.listen();

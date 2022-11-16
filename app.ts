@@ -10,16 +10,25 @@ import Database from "./modules/dynamodb/dynamodbClient";
 import UserRouter from "./modules/user/userRouter";
 import DeviceRouter from "./modules/device/deviceRoute";
 import IoT from "./modules/iot/iotClient";
+import { Server } from "socket.io";
+import http from "http"
 
 
 class App {
     public app: express.Application;
+    public server: any;
+    public io: Server;
 
 
     constructor() {
         this.app = express();
         this.initMiddleware();
         this.initRouter();
+        this.server = http.createServer(this.app);
+        this.io = new Server(this.server, { cors: { origin: "*" }});
+        this.io.on("connection", (socket) => {
+            console.log(socket.id)
+        })
     }
 
 
@@ -41,7 +50,7 @@ class App {
     public listen() {
         IoT.initSocketConnection()
         Database.initDatabase()
-        this.app.listen({ port: config.PORT }, () => {
+        this.server.listen({ port: config.PORT }, () => {
             console.log(`[SERVER] server running at port ${config.PORT}`)
         })
     }

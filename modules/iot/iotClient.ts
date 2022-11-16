@@ -3,6 +3,7 @@ import config from "../../utils/configs";
 import DeviceService from "../device/deviceService";
 import Database from "../dynamodb/dynamodbClient";
 import _ from "lodash"
+import { app } from "../..";
 
 class IoT {
     private static Client: AWSIoT.thingShadow = new AWSIoT.thingShadow({
@@ -31,6 +32,7 @@ class IoT {
                 const device = topic.split("$aws/things/")[1].split("/shadow/update")[0];
                 const jsonPayload = JSON.parse(payload.toString());
                 deviceService.updateDeviceState(device, _.get(jsonPayload, "current.state.desired"))
+                app.io.emit(config.SOCKET_DEVICE_CHANGE_EVENT, {"message": "update state"})
             })
         } catch (error) {
             console.log(error);

@@ -1,4 +1,5 @@
 import { Response, NextFunction, Request } from "express";
+import _ from "lodash";
 import { AuthResponse } from "../../utils/interfaces";
 import DeviceService from "./deviceService";
 
@@ -11,6 +12,16 @@ class DeviceController {
             const desired = req.body.desired;
             this.service.updateDeviceProperty(deviceCode, "desired", desired);
             return res.json({ "status": "published" })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public updateDevice = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { deviceCode, property } = req.body;
+            await this.service.updateDevice(deviceCode, _.pickBy(property, _.identity));
+            return res.json({ "deviceCode": deviceCode })
         } catch (error) {
             next(error)
         }

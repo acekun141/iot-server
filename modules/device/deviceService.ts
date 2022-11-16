@@ -1,5 +1,6 @@
 import { DynamoDB } from "aws-sdk";
 import Database from "../dynamodb/dynamodbClient";
+import { generateExpression, generateNames, generateValues } from "../dynamodb/dynamodbUtils";
 import IoT from "../iot/iotClient";
 
 class DeviceService {
@@ -41,8 +42,20 @@ class DeviceService {
             TableName: "devices",
             Key: {code: {S: deviceCode}},
             UpdateExpression: "SET #desired = :desired",
-            ExpressionAttributeValues: {":desired": DynamoDB.Converter.input(state.desired)},
+            ExpressionAttributeValues: {":desired": DynamoDB.Converter.input(state)},
             ExpressionAttributeNames: {"#desired": "desired"}
+        }
+        await this.dbClient.updateItem(params).promise();
+        return deviceCode
+    }
+
+    public async updateDevice(deviceCode: string, updateState: any) {
+        const params: DynamoDB.UpdateItemInput = {
+            TableName: "devices",
+            Key: {code: {S: deviceCode}},
+            UpdateExpression: `SET ${generateExpression(updateState)}`,
+            ExpressionAttributeValues: generateValues(updateState),
+            ExpressionAttributeNames: generateNames(updateState),
         }
         await this.dbClient.updateItem(params).promise();
         return deviceCode

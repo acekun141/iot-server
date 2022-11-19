@@ -18,6 +18,7 @@ const config = {
     IOT_CLIENTID: process.env.IOT_CLIENTID,
     IOT_HOST: process.env.IOT_HOST,
     SOCKET_DEVICE_CHANGE_EVENT: "device-change",
+    SENSOR_EVENT: "sensor-change"
 }
 
 export const errors = {

@@ -45,6 +45,15 @@ class DeviceController {
             next(error)
         }
     }
+
+    public getDevice = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const device = await this.service.getDevice(req.params.code);
+            return res.json({ device })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 

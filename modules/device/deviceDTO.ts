@@ -16,3 +16,8 @@ export const AddDeviceDTO = Joi.object({
     name: Joi.string().required(),
     code: Joi.string().required(),
 })
+
+
+export const GetDeviceDTO = Joi.object({
+    code: Joi.string().required()
+})

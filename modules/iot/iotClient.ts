@@ -4,6 +4,7 @@ import DeviceService from "../device/deviceService";
 import Database from "../dynamodb/dynamodbClient";
 import _ from "lodash"
 import { app } from "../..";
+import { Iot } from "aws-sdk";
 
 class IoT {
     private static Client: AWSIoT.thingShadow = new AWSIoT.thingShadow({
@@ -15,6 +16,7 @@ class IoT {
     });
 
     private static topicForSubscribe = "$aws/things/+/shadow/update/documents";
+    private static sensorTopic = "topic_2";
 
     static publishTopic = async (topicName: string, content: any) => {
         IoT.Client.publish(topicName, content);
@@ -28,11 +30,16 @@ class IoT {
         try {
             const deviceService = new DeviceService();
             IoT.subscribeTopic(IoT.topicForSubscribe);
+            IoT.subscribeTopic(IoT.sensorTopic);
             IoT.Client.on("message", (topic, payload) => {
-                const device = topic.split("$aws/things/")[1].split("/shadow/update")[0];
-                const jsonPayload = JSON.parse(payload.toString());
-                deviceService.updateDeviceState(device, _.get(jsonPayload, "current.state.desired"))
-                app.io.emit(config.SOCKET_DEVICE_CHANGE_EVENT, {"message": "update state"})
+                if (topic == IoT.sensorTopic) {
+                    app.io.emit(config.SENSOR_EVENT, JSON.parse(payload.toString()))
+                } else {
+                    const device = topic.split("$aws/things/")[1].split("/shadow/update")[0];
+                    const jsonPayload = JSON.parse(payload.toString());
+                    deviceService.updateDeviceState(device, _.get(jsonPayload, "current.state.desired"))
+                    app.io.emit(config.SOCKET_DEVICE_CHANGE_EVENT, {"message": "update state"})
+                }
             })
         } catch (error) {
             console.log(error);

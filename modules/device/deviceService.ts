@@ -37,6 +37,14 @@ class DeviceService {
         return (devices || []).map((device: any) => DynamoDB.Converter.unmarshall(device));
     }
 
+    public async getDevice(code: string) {
+        const { Item: user }: any = await this.dbClient.getItem({
+            TableName: "devices",
+            Key: {"code": {S: code}}
+        }).promise()
+        return DynamoDB.Converter.unmarshall(user)
+    }
+
     public async updateDeviceState(deviceCode: string, state: any) {
         const params: DynamoDB.UpdateItemInput = {
             TableName: "devices",

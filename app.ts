@@ -12,6 +12,7 @@ import DeviceRouter from "./modules/device/deviceRoute";
 import IoT from "./modules/iot/iotClient";
 import { Server } from "socket.io";
 import http from "http"
+import ChartRouter from "./modules/chart/chartRoute";
 
 
 class App {
@@ -41,7 +42,7 @@ class App {
 
 
     private initRouter() {
-        const routers = [new AuthRouter(), new UserRouter(), new DeviceRouter()]
+        const routers = [new AuthRouter(), new UserRouter(), new DeviceRouter(), new ChartRouter()]
         routers.map(({ router }) => this.app.use(router));
         this.app.use(exceptionHandler)
     }
